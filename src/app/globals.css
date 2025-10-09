@@ -376,6 +376,53 @@
   .alert-delete-btn {
     @apply text-gray-400 rounded-full hover:bg-red-600/15 bg-transparent cursor-pointer transition-colors;
   }
+
+  /* Minimal Auth Styles */
+  .minimal-auth-layout {
+    @apply min-h-screen bg-gray-900 flex items-center justify-center px-4;
+  }
+  .minimal-auth-container {
+    @apply w-full max-w-md space-y-6;
+  }
+  .minimal-logo {
+    @apply flex justify-center;
+  }
+  .minimal-form-container {
+    @apply space-y-4;
+  }
+  .minimal-title {
+    @apply text-3xl font-bold text-white text-center;
+  }
+  .minimal-subtitle {
+    @apply text-gray-400 text-center text-sm;
+  }
+  .minimal-form {
+    @apply space-y-3;
+  }
+  .minimal-input-group {
+    @apply space-y-0;
+  }
+  .minimal-input {
+    @apply w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all;
+  }
+  .minimal-btn {
+    @apply w-full py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-yellow-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-900;
+  }
+  .minimal-link {
+    @apply text-center text-gray-400 text-sm;
+  }
+  .minimal-link-accent {
+    @apply text-yellow-400 hover:text-yellow-300 font-medium transition-colors;
+  }
+  .minimal-select {
+    @apply w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all;
+  }
+  .minimal-dropdown {
+    @apply w-full bg-gray-800 border border-gray-600 rounded-lg;
+  }
+  .minimal-dropdown-item {
+    @apply text-white cursor-pointer px-4 py-2 hover:bg-gray-700 transition-colors;
+  }
 }
 
 /* Market News Component Styles */
