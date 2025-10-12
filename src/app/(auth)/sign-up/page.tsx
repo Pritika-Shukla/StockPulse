@@ -10,19 +10,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import Image from "next/image";
-
+import { useRouter } from 'next/navigation';
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    country: "Australia",
+      
     password: "",
     confirmPassword: "",
-    investmentGoals: "Growth",
-    riskTolerance: "",
-    preferredIndustry: "",
+    
   });
+
+  const router = useRouter();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -36,8 +35,8 @@ const SignUpPage = () => {
       return;
     }
     
-    // Handle sign up logic here
-    console.log('Sign up:', formData);
+    // TODO: Implement user registration logic
+    alert('User registration not implemented yet');
   };
 
   const countries = [

@@ -10,7 +10,7 @@ datasource db {
 model User {
   id            String    @id @default(cuid()) @map("_id")
   email         String    @unique
-  emailVerified DateTime?
+  emailVerified Boolean   @default(false)
   name          String?
   image         String?
   createdAt     DateTime  @default(now())
