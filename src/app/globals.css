@@ -423,6 +423,48 @@
   .minimal-dropdown-item {
     @apply text-white cursor-pointer px-4 py-2 hover:bg-gray-700 transition-colors;
   }
+
+  /* Hero Section Styles */
+  .hero-gradient {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 50%, #0f172a 100%);
+  }
+  
+  .hero-text-shadow {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .hero-glow {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  }
+  
+  .hero-glow:hover {
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+  }
+  
+  /* Enhanced Header Styles */
+  .header-glass {
+    backdrop-filter: blur(10px);
+    background: rgba(17, 24, 39, 0.8);
+  }
+  
+  /* Animation Classes */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes glow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+  
+  .glow-animation {
+    animation: glow 2s ease-in-out infinite;
+  }
 }
 
 /* Market News Component Styles */
