@@ -10,3 +10,15 @@ export interface ClerkUser {
     created_at: number;
     updated_at: number;
   }
+
+  export interface MarketNews {
+      id: number;
+      headline: string;
+      summary: string;
+      source: string;
+      url: string;
+      datetime: number;
+      category: string;
+      related: string;
+      image?: string;
+  };
