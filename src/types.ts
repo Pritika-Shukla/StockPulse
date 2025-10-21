@@ -22,3 +22,34 @@ export interface ClerkUser {
       related: string;
       image?: string;
   };
+
+  export interface  RawNewsArticle  {
+      id: number;
+      headline?: string;
+      summary?: string;
+      source?: string;
+      url?: string;
+      datetime?: number;
+      image?: string;
+      category?: string;
+      related?: string;
+  };
+
+  export interface MarketNewsArticle {
+    id: number;
+    headline?: string;
+    summary?: string;
+    source?: string;
+    url?: string;
+    datetime?: number;
+    image?: string;
+    category?: string;
+    related?: string;
+  }
+
+
+  export interface UserForNewsEmail {
+    id: string;
+    email: string;
+    watchlist: string[];
+  }
