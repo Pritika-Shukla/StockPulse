@@ -1,3 +1,5 @@
+import { Watchlist } from "@prisma/client";
+
 export interface ClerkUser {
     id: string;
     clerkId: string;
@@ -53,3 +55,9 @@ export interface ClerkUser {
     email: string;
     watchlist: string[];
   }
+
+  export type User = {
+    id: string;
+    name: string;
+    email: string;
+};

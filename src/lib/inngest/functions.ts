@@ -3,6 +3,7 @@ import { getAllUsers } from "../actions/users.actions";
 import { inngest } from "./client";
 import { getNews } from "../actions/finnhub.actions";
 import { getWatchlistByEmail } from "../actions/watchlist.actions";
+import { NEWS_SUMMARY_EMAIL_PROMPT } from "./prompt";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world" },
@@ -22,46 +23,71 @@ export const sendDailyNewsSummary = inngest.createFunction(
     if (!users || users.length === 0) {
       return { success: false, message: "No users found" };
     }
-    const perUser: Array<{
-      user: UserForNewsEmail;
-      articles: MarketNewsArticle[];
-    }> = [];
-    for (const user of users) {
-      try {
-        const symbols = await getWatchlistByEmail(user.email);
-        let articles = await getNews(symbols as string[]);
-        // Enforce max 6 articles per user
-        articles = (articles || []).slice(0, 6);
-        // If still empty, fallback to general
-        if (!articles || articles.length === 0) {
-          articles = await getNews();
+    const results = await step.run("fetch-user-news", async () => {
+      const perUser: Array<{
+        user: UserForNewsEmail;
+        articles: MarketNewsArticle[];
+      }> = [];
+      
+      for (const user of users) {
+        try {
+          const symbols = await getWatchlistByEmail(user.email);
+          let articles = await getNews(symbols as string[]);
+          // Enforce max 6 articles per user
           articles = (articles || []).slice(0, 6);
+          // If still empty, fallback to general
+          if (!articles || articles.length === 0) {
+            articles = await getNews();
+            articles = (articles || []).slice(0, 6);
+          }
+
+          // Transform user to UserForNewsEmail format
+          const userForNews: UserForNewsEmail = {
+            id: user.id,
+            email: user.email,
+            watchlist: symbols || [],
+          };
+
+          perUser.push({ user: userForNews, articles });
+        } catch (e) {
+          console.error("daily-news: error preparing user news", user.email, e);
+
+          // Transform user to UserForNewsEmail format even on error
+          const userForNews: UserForNewsEmail = {
+            id: user.id,
+            email: user.email,
+            watchlist: [],
+          };
+
+          perUser.push({ user: userForNews, articles: [] });
         }
+      }
 
-        // Transform user to UserForNewsEmail format
-        const userForNews: UserForNewsEmail = {
-          id: user.id,
-          email: user.email,
-          watchlist: symbols || [],
-        };
+      return perUser;
+    });
 
-        perUser.push({ user: userForNews, articles });
-      } catch (e) {
-        console.error("daily-news: error preparing user news", user.email, e);
+    // Summarize news via AI 
+    const userNewsSummary: {user: UserForNewsEmail; newsContent: string}[] = [];
 
-        // Transform user to UserForNewsEmail format even on error
-        const userForNews: UserForNewsEmail = {
-          id: user.id,
-          email: user.email,
-          watchlist: [],
-        };
+    for (const {user, articles} of results) {
+      try {
+        const prompt = NEWS_SUMMARY_EMAIL_PROMPT.replace("{{newsData}}", JSON.stringify(articles, null, 2));
+        const response = await step.ai.infer(`summarize-news-${user.email}`, {
+          model: step.ai.models.openai({ model: "gpt-4o-mini" }),
+          body: {
+            messages: [{ role: "user", content: prompt }]
+          }
+        });
 
-        perUser.push({ user: userForNews, articles: [] });
+
+        const newsContent = response.choices?.[0]?.message?.content || 'No market news.';
+        userNewsSummary.push({ user, newsContent });
+      } catch(e) {
+        console.error("daily-news: error summarizing user news", user.email, e);
+        userNewsSummary.push({ user, newsContent: "Error summarizing news"});
       }
     }
-    //Summarize news via ai 
-const userNewsSummary: {user: UserForNewsEmail; summary: string}[] = [];
 
-    return { success: true, message: "Daily summary sent", data: perUser };
+    return { success: true, message: "Daily summary sent", data: results };
   }
 );
