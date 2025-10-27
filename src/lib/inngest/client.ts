@@ -1,4 +1,12 @@
 import { Inngest } from "inngest";
 
 // Create a client to send and receive events
-export const inngest = new Inngest({ id: "signalist" });
+export const inngest = new Inngest({ 
+  id: "signalist",
+  // Configure AI providers
+  ai: {
+    openai: {
+      apiKey: process.env.OPENAI_API_KEY
+    }
+  }
+});

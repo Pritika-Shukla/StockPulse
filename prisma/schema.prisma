@@ -12,7 +12,7 @@ model User {
   clerkId   String      @unique
   firstName String?
   lastName  String?
-  email     String
+  email     String      @unique
   imageUrl  String?
   watchlist Watchlist[]
   createdAt DateTime    @default(now())
@@ -22,9 +22,12 @@ model User {
 model Watchlist {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   userId    String   @db.ObjectId
-  user      User?    @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   company   String
   symbol    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, symbol])
+  @@index([userId])
 }
