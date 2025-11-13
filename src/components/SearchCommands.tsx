@@ -1,60 +1,9 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
-import { Search, Star, X } from "lucide-react"
+import { Search, Star, X, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-interface Stock {
-  id: string
-  symbol: string
-  name: string
-  category: string
-  ticker: string
-  isFavorited: boolean
-}
-
-const POPULAR_STOCKS: Stock[] = [
-  {
-    id: "1",
-    symbol: "AAPL",
-    name: "Apple Inc",
-    category: "Consumer Electronics",
-    ticker: "NASDAQ:NMS",
-    isFavorited: true,
-  },
-  {
-    id: "2",
-    symbol: "MSFT",
-    name: "Microsoft Corp",
-    category: "Software",
-    ticker: "NASDAQ:NMS",
-    isFavorited: false,
-  },
-  {
-    id: "3",
-    symbol: "GOOGL",
-    name: "Alphabet Inc",
-    category: "Internet Content & Information",
-    ticker: "NASDAQ:NMS",
-    isFavorited: true,
-  },
-  {
-    id: "4",
-    symbol: "TSLA",
-    name: "Tesla Inc",
-    category: "Auto Manufacturers",
-    ticker: "NASDAQ:NMS",
-    isFavorited: false,
-  },
-  {
-    id: "5",
-    symbol: "META",
-    name: "Meta Platforms Inc",
-    category: "Internet Content & Information",
-    ticker: "NASDAQ:NMS",
-    isFavorited: false,
-  },
-]
+import { StockWithWatchlistStatus } from "@/lib/actions/finnhub.actions"
 
 interface SearchModalProps {
   isOpen?: boolean
@@ -64,9 +13,11 @@ interface SearchModalProps {
 export function SearchModal({ isOpen: controlledIsOpen, onOpenChange }: SearchModalProps = {}) {
   const [internalIsOpen, setInternalIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [stocks, setStocks] = useState<Stock[]>(POPULAR_STOCKS)
-  const [favorites, setFavorites] = useState(new Set(POPULAR_STOCKS.filter((s) => s.isFavorited).map((s) => s.id)))
+  const [stocks, setStocks] = useState<StockWithWatchlistStatus[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [favorites, setFavorites] = useState(new Set<string>())
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   // Use controlled state if provided, otherwise use internal state
   const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen
@@ -101,19 +52,51 @@ export function SearchModal({ isOpen: controlledIsOpen, onOpenChange }: SearchMo
     }
   }, [isOpen])
 
-  // Filter stocks based on search query
-  const filteredStocks = stocks.filter(
-    (stock) =>
-      stock.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  // Fetch stocks when search query changes (with debounce)
+  useEffect(() => {
+    if (!isOpen) return
 
-  const toggleFavorite = (id: string) => {
+    // Clear previous timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current)
+    }
+
+    setIsLoading(true)
+
+    // Debounce the search
+    debounceTimerRef.current = setTimeout(async () => {
+      try {
+        const query = searchQuery.trim() || undefined
+        const url = query 
+          ? `/api/search?q=${encodeURIComponent(query)}`
+          : `/api/search`
+        
+        const response = await fetch(url)
+        if (!response.ok) throw new Error("Failed to fetch stocks")
+        
+        const data = await response.json()
+        setStocks(data || [])
+      } catch (error) {
+        console.error("Error fetching stocks:", error)
+        setStocks([])
+      } finally {
+        setIsLoading(false)
+      }
+    }, 300) // 300ms debounce
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+    }
+  }, [searchQuery, isOpen])
+
+  const toggleFavorite = (symbol: string) => {
     const newFavorites = new Set(favorites)
-    if (newFavorites.has(id)) {
-      newFavorites.delete(id)
+    if (newFavorites.has(symbol)) {
+      newFavorites.delete(symbol)
     } else {
-      newFavorites.add(id)
+      newFavorites.add(symbol)
     }
     setFavorites(newFavorites)
 
@@ -121,7 +104,7 @@ export function SearchModal({ isOpen: controlledIsOpen, onOpenChange }: SearchMo
     setStocks(
       stocks.map((stock) => ({
         ...stock,
-        isFavorited: newFavorites.has(stock.id),
+        isInWatchlist: newFavorites.has(stock.symbol),
       })),
     )
   }
@@ -154,15 +137,20 @@ export function SearchModal({ isOpen: controlledIsOpen, onOpenChange }: SearchMo
 
           {/* Results */}
           <div className="max-h-96 overflow-y-auto">
-            {filteredStocks.length > 0 ? (
+            {isLoading ? (
+              <div className="px-4 py-8 text-center">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">Searching...</p>
+              </div>
+            ) : stocks.length > 0 ? (
               <>
                 <div className="px-4 py-2 text-xs font-medium text-muted-foreground bg-gray-800">
-                  Popular Stocks ({filteredStocks.length})
+                  {searchQuery.trim() ? `Search Results (${stocks.length})` : `Popular Stocks (${stocks.length})`}
                 </div>
                 <div className="divide-y divide-border/30">
-                  {filteredStocks.map((stock) => (
+                  {stocks.map((stock) => (
                     <div
-                      key={stock.id}
+                      key={stock.symbol}
                       className="flex items-center justify-between px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-3 flex-1">
@@ -172,21 +160,23 @@ export function SearchModal({ isOpen: controlledIsOpen, onOpenChange }: SearchMo
                         <div className="min-w-0">
                           <div className="font-medium text-sm text-foreground">{stock.name}</div>
                           <div className="text-xs text-muted-foreground mt-0.5">
-                            {stock.symbol} • {stock.ticker} • {stock.category}
+                            {stock.symbol} • {stock.exchange} • {stock.type}
                           </div>
                         </div>
                       </div>
                       <button
                         onClick={(e) => {
                           e.stopPropagation()
-                          toggleFavorite(stock.id)
+                          toggleFavorite(stock.symbol)
                         }}
                         className="ml-2 p-2 hover:bg-muted rounded transition-colors"
                       >
                         <Star
                           className={cn(
                             "h-4 w-4 transition-colors",
-                            favorites.has(stock.id) ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground",
+                            favorites.has(stock.symbol) || stock.isInWatchlist
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-muted-foreground",
                           )}
                         />
                       </button>
