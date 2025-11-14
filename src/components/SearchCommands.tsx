@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
+import { useRouter } from "next/navigation"
 import { Search, Star, X, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StockWithWatchlistStatus } from "@/lib/actions/finnhub.actions"
@@ -11,6 +12,7 @@ interface SearchModalProps {
 }
 
 export function SearchModal({ isOpen: controlledIsOpen, onOpenChange }: SearchModalProps = {}) {
+  const router = useRouter()
   const [internalIsOpen, setInternalIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [stocks, setStocks] = useState<StockWithWatchlistStatus[]>([])
@@ -151,6 +153,10 @@ export function SearchModal({ isOpen: controlledIsOpen, onOpenChange }: SearchMo
                   {stocks.map((stock) => (
                     <div
                       key={stock.symbol}
+                      onClick={() => {
+                        router.push(`/stock/${stock.symbol}`)
+                        setIsOpen(false)
+                      }}
                       className="flex items-center justify-between px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-3 flex-1">

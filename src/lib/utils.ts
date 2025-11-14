@@ -133,3 +133,42 @@ export const getFormattedTodayDate = () => new Date().toLocaleDateString('en-US'
   day: 'numeric',
   timeZone: 'UTC',
 });
+
+// Normalize exchange name (e.g., "NASDAQ NMS - GLOBAL MARKET" -> "NASDAQ")
+export const normalizeExchange = (exch: string): string => {
+  if (!exch || exch === "US") return "";
+  
+  // Extract the main exchange name (usually the first word)
+  const normalized = exch.trim().split(/\s+/)[0].toUpperCase();
+  
+  // Map common exchange variations
+  const exchangeMap: Record<string, string> = {
+    "NASDAQ": "NASDAQ",
+    "NYSE": "NYSE",
+    "AMEX": "AMEX",
+    "NYSEARCA": "NYSEARCA",
+    "BATS": "BATS",
+    "OTC": "OTC",
+  };
+  
+  return exchangeMap[normalized] || normalized;
+};
+
+// Get TradingView symbol format (e.g., NASDAQ:AAPL)
+export const getTradingViewSymbol = (sym: string, exch: string): string => {
+  const normalizedExchange = normalizeExchange(exch);
+  
+  // Use normalized exchange if available
+  if (normalizedExchange) {
+    return `${normalizedExchange}:${sym}`;
+  }
+  
+  // Fallback: try to determine exchange from symbol
+  const nasdaqSymbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "NFLX", "ADBE", "INTC", "AMD"];
+  if (nasdaqSymbols.includes(sym)) {
+    return `NASDAQ:${sym}`;
+  }
+  
+  // Last resort: try without exchange (TradingView might auto-detect)
+  return sym;
+};

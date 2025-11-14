@@ -19,6 +19,27 @@ interface FinnhubProfile {
   name?: string;
   ticker?: string;
   exchange?: string;
+  finnhubIndustry?: string;
+  country?: string;
+  currency?: string;
+  ipo?: string;
+  logo?: string;
+  marketCapitalization?: number;
+  shareOutstanding?: number;
+  weburl?: string;
+  phone?: string;
+  description?: string;
+}
+
+interface FinnhubQuote {
+  c: number; // current price
+  d: number; // change
+  dp: number; // percent change
+  h: number; // high price of the day
+  l: number; // low price of the day
+  o: number; // open price of the day
+  pc: number; // previous close price
+  t: number; // timestamp
 }
 
 interface FinnhubSearchResultWithExchange extends FinnhubSearchResult {
@@ -151,6 +172,102 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
   }
 }
 
+
+export interface StockQuote {
+  currentPrice: number;
+  change: number;
+  percentChange: number;
+  high: number;
+  low: number;
+  open: number;
+  previousClose: number;
+  timestamp: number;
+}
+
+export interface StockProfile {
+  name: string;
+  ticker: string;
+  exchange: string;
+  industry?: string;
+  country?: string;
+  currency?: string;
+  ipo?: string;
+  logo?: string;
+  marketCapitalization?: number;
+  shareOutstanding?: number;
+  weburl?: string;
+  phone?: string;
+  description?: string;
+}
+
+export const getStockQuote = cache(async (symbol: string): Promise<StockQuote | null> => {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      console.error('FINNHUB API key is not configured');
+      return null;
+    }
+
+    const cleanSymbol = symbol.trim().toUpperCase();
+    const url = `${FINNHUB_BASE_URL}/quote?symbol=${encodeURIComponent(cleanSymbol)}&token=${token}`;
+    const quote = await rateLimitedFetch<FinnhubQuote>(url, 60); // Revalidate every minute
+
+    if (!quote || quote.c === 0) {
+      return null;
+    }
+
+    return {
+      currentPrice: quote.c,
+      change: quote.d,
+      percentChange: quote.dp,
+      high: quote.h,
+      low: quote.l,
+      open: quote.o,
+      previousClose: quote.pc,
+      timestamp: quote.t,
+    };
+  } catch (err) {
+    console.error('Error fetching stock quote:', err);
+    return null;
+  }
+});
+
+export const getStockProfile = cache(async (symbol: string): Promise<StockProfile | null> => {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      console.error('FINNHUB API key is not configured');
+      return null;
+    }
+
+    const cleanSymbol = symbol.trim().toUpperCase();
+    const url = `${FINNHUB_BASE_URL}/stock/profile2?symbol=${encodeURIComponent(cleanSymbol)}&token=${token}`;
+    const profile = await rateLimitedFetch<FinnhubProfile>(url, 3600); // Revalidate every hour
+
+    if (!profile || !profile.name) {
+      return null;
+    }
+
+    return {
+      name: profile.name,
+      ticker: profile.ticker || cleanSymbol,
+      exchange: profile.exchange || 'US',
+      industry: profile.finnhubIndustry,
+      country: profile.country,
+      currency: profile.currency,
+      ipo: profile.ipo,
+      logo: profile.logo,
+      marketCapitalization: profile.marketCapitalization,
+      shareOutstanding: profile.shareOutstanding,
+      weburl: profile.weburl,
+      phone: profile.phone,
+      description: profile.description,
+    };
+  } catch (err) {
+    console.error('Error fetching stock profile:', err);
+    return null;
+  }
+});
 
 export const searchStocks = cache(async (query?: string): Promise<StockWithWatchlistStatus[]> => {
   try {
