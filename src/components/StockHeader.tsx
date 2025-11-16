@@ -38,7 +38,6 @@ export default function StockHeader({
     // Simple check - market typically open 9:30 AM - 4:00 PM ET
     return "MARKET CLOSED (AS OF " + now.toLocaleTimeString("en-US", { timeZoneName: "short" }) + ")";
   };
-
   return (
     <div className="bg-gray-800 rounded-lg p-6">
       {/* Top Row - Company Info and Add to Watchlist */}

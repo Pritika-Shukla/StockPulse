@@ -22,7 +22,6 @@ export default async function StockPage({ params }: StockPageProps) {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Header showAuth={true} />
       <StockDetailPage symbol={cleanSymbol} quote={quote} profile={profile} />
     </div>
   );
