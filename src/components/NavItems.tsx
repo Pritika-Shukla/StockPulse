@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { Menu, X, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import { NAV_ITEMS } from "@/lib/constants"
 
 export function NavItems() {
@@ -15,6 +16,7 @@ export function NavItems() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const lastScrollY = useRef(0)
   const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -125,7 +127,7 @@ export function NavItems() {
         }}
       >
         {/* Main Navigation */}
-        <div className="w-[90vw] max-w-xs md:max-w-4xl mx-auto">
+        <div className="w-[85vw] max-w-xs md:max-w-3xl mx-auto">
           <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-3 md:px-6 md:py-2">
             <div className="flex items-center justify-between">
               {/* Logo */}
@@ -205,21 +207,34 @@ export function NavItems() {
                 })}
               </div>
 
-              {/* Desktop CTA Button */}
+              {/* Desktop CTA Button / User Profile */}
               <div className="hidden md:block">
-                <button
-                  className="relative bg-white hover:bg-gray-50 text-black font-medium px-6 py-2 rounded-full flex items-center transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer group focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent active:scale-95"
-                  onClick={() => scrollToSection("#contact")}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault()
-                      scrollToSection("#contact")
-                    }
-                  }}
-                >
-                  <span className="mr-2">Get Started</span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
+                <SignedOut>
+                  <button
+                    className="relative bg-white hover:bg-gray-50 text-black font-medium px-6 py-2 rounded-full flex items-center transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer group focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent active:scale-95"
+                    onClick={() => router.push("/sign-in")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        router.push("/sign-in")
+                      }
+                    }}
+                  >
+                    <span className="mr-2">Get Started</span>
+                    <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </button>
+                </SignedOut>
+                <SignedIn>
+                  <div className="flex items-center">
+                    <UserButton 
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-10 h-10",
+                        },
+                      }}
+                    />
+                  </div>
+                </SignedIn>
               </div>
 
               {/* Mobile Menu Button */}
@@ -338,24 +353,49 @@ export function NavItems() {
                   )
                 })}
                 <div className="h-px bg-white/10 my-2" />
-                <button
-                  className={`relative bg-white hover:bg-gray-50 text-black font-medium px-6 py-3 rounded-full flex items-center transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer group transform focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent active:scale-95 ${
-                    isOpen ? "animate-mobile-menu-item" : ""
-                  }`}
-                  style={{
-                    animationDelay: isOpen ? `${NAV_ITEMS.length * 80 + 150}ms` : "0ms",
-                  }}
-                  onClick={() => scrollToSection("#contact")}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault()
-                      scrollToSection("#contact")
-                    }
-                  }}
-                >
-                  <span className="mr-2">Get Started</span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
+                <SignedOut>
+                  <button
+                    className={`relative bg-white hover:bg-gray-50 text-black font-medium px-6 py-3 rounded-full flex items-center transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer group transform focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent active:scale-95 ${
+                      isOpen ? "animate-mobile-menu-item" : ""
+                    }`}
+                    style={{
+                      animationDelay: isOpen ? `${NAV_ITEMS.length * 80 + 150}ms` : "0ms",
+                    }}
+                    onClick={() => {
+                      router.push("/sign-in")
+                      setIsOpen(false)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        router.push("/sign-in")
+                        setIsOpen(false)
+                      }
+                    }}
+                  >
+                    <span className="mr-2">Get Started</span>
+                    <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </button>
+                </SignedOut>
+                <SignedIn>
+                  <div
+                    className={`flex items-center justify-center ${
+                      isOpen ? "animate-mobile-menu-item" : ""
+                    }`}
+                    style={{
+                      animationDelay: isOpen ? `${NAV_ITEMS.length * 80 + 150}ms` : "0ms",
+                    }}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <UserButton 
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-10 h-10",
+                        },
+                      }}
+                    />
+                  </div>
+                </SignedIn>
               </div>
             </div>
           </div>

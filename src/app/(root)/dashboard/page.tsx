@@ -1,16 +1,11 @@
 import TradingViewWidget from "@/components/TradingViewWidget";
 import { HEATMAP_WIDGET_CONFIG, MARKET_DATA_WIDGET_CONFIG, MARKET_OVERVIEW_WIDGET_CONFIG, TOP_STORIES_WIDGET_CONFIG } from "@/lib/constants";
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
 
 const Dashboard = () => {
   const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
 
   return (
-    <div className=" bg-gray-50 border-2 border-gray-700 rounded-lg">
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
-      <SignedIn>
+    <div className=" bg-gray-50  ">
        {/* Trading Widgets Section */}
        <section className="h-screen w-full bg-gray-900 pt-16 md:pt-20 pb-8">
                 <div className="h-full w-full">
@@ -60,7 +55,6 @@ const Dashboard = () => {
                     </div>
                 </div>
             </section>    
-      </SignedIn>
     </div>
   );
 };

@@ -14,7 +14,7 @@ const Home = async () => {
 
     return (
         <div className="min-h-screen bg-gray-900">
-            <Header showAuth={true} />
+            <Header  />
             {/* Hero Section */}
             <HeroSection />
             

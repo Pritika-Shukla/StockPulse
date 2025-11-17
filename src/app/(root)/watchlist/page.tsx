@@ -20,7 +20,7 @@ const WatchlistPage = async () => {
   
   if (watchlistItems.length === 0) {
     return (
-      <section className="flex watchlist-empty-container">
+      <section className="flex flex-col items-center justify-center  my-auto min-h-screen">
         <div className="watchlist-empty">
           <Star className="watchlist-star" />
           <h2 className="empty-title">Your watchlist is empty</h2>
@@ -45,7 +45,7 @@ const WatchlistPage = async () => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className=" mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="watchlist-title">My Watchlist</h1>
         <p className="text-gray-400 mt-2">Track your favorite stocks</p>
