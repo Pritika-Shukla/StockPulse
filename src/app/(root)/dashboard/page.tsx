@@ -1,55 +1,65 @@
+import TradingViewWidget from "@/components/TradingViewWidget";
+import { HEATMAP_WIDGET_CONFIG, MARKET_DATA_WIDGET_CONFIG, MARKET_OVERVIEW_WIDGET_CONFIG, TOP_STORIES_WIDGET_CONFIG } from "@/lib/constants";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
 
 const Dashboard = () => {
+  const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className=" bg-gray-50 border-2 border-gray-700 rounded-lg">
       <SignedOut>
         <RedirectToSignIn />
       </SignedOut>
       <SignedIn>
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Welcome to Your Dashboard!</h1>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-800 mb-3">Portfolio Overview</h2>
-                <p className="text-gray-600">Track your investments and portfolio performance.</p>
-                <div className="mt-4 text-2xl font-bold text-green-600">+12.5%</div>
-              </div>
-              
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-800 mb-3">Watchlist</h2>
-                <p className="text-gray-600">Monitor your favorite stocks and assets.</p>
-                <div className="mt-4 text-sm text-gray-500">15 stocks tracked</div>
-              </div>
-              
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-800 mb-3">Market News</h2>
-                <p className="text-gray-600">Stay updated with the latest market insights.</p>
-                <div className="mt-4 text-sm text-gray-500">24 new articles</div>
-              </div>
-            </div>
-            
-            <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center py-2 border-b border-gray-200">
-                  <span className="text-gray-700">Bought 10 shares of AAPL</span>
-                  <span className="text-sm text-gray-500">2 hours ago</span>
+       {/* Trading Widgets Section */}
+       <section className="h-screen w-full bg-gray-900">
+                <div className="h-full w-full">
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl font-bold text-white mb-4">Live Market Data</h2>
+                        <p className="text-gray-400 text-lg">Real-time insights and analytics to help you make informed decisions</p>
+                    </div>
+                    
+                    <div className="grid h-full w-full gap-8 home-section">
+                        <div className="h-full w-full md:col-span-1 xl:col-span-1">
+                            <TradingViewWidget
+                              title="Market Overview"
+                              scriptUrl={`${scriptUrl}market-overview.js`}
+                              config={MARKET_OVERVIEW_WIDGET_CONFIG}
+                              className="custom-chart"
+                              height={600}
+                            />
+                        </div>
+                        <div className="h-full w-full md:col-span-1 xl:col-span-2">
+                            <TradingViewWidget
+                                title="Stock Heatmap"
+                                scriptUrl={`${scriptUrl}stock-heatmap.js`}
+                                config={HEATMAP_WIDGET_CONFIG}
+                                height={600}
+                                className="custom-chart"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div className="grid h-full w-full gap-8 home-section mt-8">
+                        <div className="h-full w-full md:col-span-1 xl:col-span-1">
+                            <TradingViewWidget
+                                scriptUrl={`${scriptUrl}timeline.js`}
+                                config={TOP_STORIES_WIDGET_CONFIG}
+                                height={600}
+                                className="custom-chart"
+                            />
+                        </div>
+                        <div className="h-full w-full md:col-span-1 xl:col-span-2">
+                            <TradingViewWidget
+                                scriptUrl={`${scriptUrl}market-quotes.js`}
+                                config={MARKET_DATA_WIDGET_CONFIG}
+                                height={600}
+                                className="custom-chart"
+                            />
+                        </div>
+                    </div>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-200">
-                  <span className="text-gray-700">Added TSLA to watchlist</span>
-                  <span className="text-sm text-gray-500">1 day ago</span>
-                </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-700">Portfolio updated</span>
-                  <span className="text-sm text-gray-500">3 days ago</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+            </section>    
       </SignedIn>
     </div>
   );

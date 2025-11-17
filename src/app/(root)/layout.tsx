@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "StockPulse - Professional Trading Platform",
-  description: "Master the markets with real-time data, advanced analytics, and personalized insights. Join thousands of traders who trust StockPulse.",
+  description: "Master the markets with real-time data, advanced analytics, and personalized insights.",
 };
 
 export default function RootLayout({

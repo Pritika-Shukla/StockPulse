@@ -14,9 +14,9 @@ const HeroSection = () => {
       </div>
       
       {/* Animated Background Elements */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl animate-pulse delay-500"></div>
+      <div className="absolute top-20 left-10 w-72 h-72 bg-gray-700/30 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-gray-600/25 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gray-800/30 rounded-full blur-3xl animate-pulse delay-500"></div>
 
       <div className="relative z-10 container mx-auto px-4 text-center">
         <div className="max-w-4xl mx-auto">
@@ -28,7 +28,7 @@ const HeroSection = () => {
 
           {/* Main Heading */}
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            Master the
+            Analyze the
             <span className="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text text-transparent"> Markets</span>
             <br />
             Like a Pro
@@ -37,7 +37,7 @@ const HeroSection = () => {
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
             Get real-time stock data, advanced analytics, and personalized insights to make informed investment decisions. 
-            Join thousands of traders who trust StockPulse for their market analysis.
+
           </p>
 
           {/* CTA Buttons */}

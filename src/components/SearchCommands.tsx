@@ -149,8 +149,8 @@ export function SearchModal({ isOpen: controlledIsOpen, onOpenChange }: SearchMo
       <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setIsOpen(false)} />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-start justify-center pt-32">
-        <div className="w-full max-w-2xl rounded-lg bg-gray-700 shadow-lg">
+      <div className="fixed inset-0 z-40 flex items-start justify-center pt-32 pointer-events-none">
+        <div className="w-full max-w-2xl rounded-lg bg-gray-700 shadow-lg pointer-events-auto">
           {/* Search Input */}
           <div className="flex items-center border-b border-border/50 px-4 py-3">
             <Search className="mr-3 h-5 w-5 text-muted-foreground" />
