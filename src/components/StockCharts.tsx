@@ -2,7 +2,7 @@
 
 import { StockQuote } from "@/lib/actions/finnhub.actions";
 import TradingViewWidget from "./TradingViewWidget";
-import { CANDLE_CHART_WIDGET_CONFIG, BASELINE_WIDGET_CONFIG } from "@/lib/constants";
+import { CANDLE_CHART_WIDGET_CONFIG, BASELINE_WIDGET_CONFIG, ECONOMIC_CALENDAR_WIDGET_CONFIG } from "@/lib/constants";
 import { getTradingViewSymbol } from "@/lib/utils";
 
 interface StockChartsProps {
@@ -38,11 +38,11 @@ export default function StockCharts({ symbol, quote, exchange }: StockChartsProp
             O:{quote.open.toFixed(2)} H:{quote.high.toFixed(2)} L:{quote.low.toFixed(2)} C:{quote.currentPrice.toFixed(2)} {quote.change >= 0 ? "+" : ""}{quote.change.toFixed(2)} ({quote.percentChange >= 0 ? "+" : ""}{quote.percentChange.toFixed(2)}%)
           </div>
         </div>
-        <div className="h-[500px]">
+        <div className="h-[600px]">
           <TradingViewWidget
             scriptUrl={scriptUrl}
             config={candleConfig}
-            height={500}
+            height={600}
             className="custom-chart"
           />
         </div>
@@ -58,11 +58,24 @@ export default function StockCharts({ symbol, quote, exchange }: StockChartsProp
             {quote.currentPrice.toFixed(2)} {quote.change >= 0 ? "+" : ""}{quote.change.toFixed(2)} ({quote.percentChange >= 0 ? "+" : ""}{quote.percentChange.toFixed(2)}%)
           </div>
         </div>
-        <div className="h-[500px]">
+        <div className="h-[600px]">
           <TradingViewWidget
             scriptUrl={scriptUrl}
             config={baselineConfig}
-            height={500}
+            height={600}
+            className="custom-chart"
+          />
+        </div>
+      </div>
+      
+      {/* Economic Calendar Widget */}
+      <div className="bg-gray-800 rounded-lg p-4">
+        <h3 className="text-white font-semibold mb-4">Economic Calendar</h3>
+        <div className="h-[550px]">
+          <TradingViewWidget
+            scriptUrl="https://s3.tradingview.com/external-embedding/embed-widget-events.js"
+            config={ECONOMIC_CALENDAR_WIDGET_CONFIG}
+            height={550}
             className="custom-chart"
           />
         </div>

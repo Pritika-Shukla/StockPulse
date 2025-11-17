@@ -25,11 +25,13 @@ export default function StockSidebar({ symbol, profile, quote, exchange }: Stock
   const profileConfig = {
     ...COMPANY_PROFILE_WIDGET_CONFIG(symbol),
     symbol: tvSymbol,
+    height: 450,
   };
 
   const financialsConfig = {
     ...COMPANY_FINANCIALS_WIDGET_CONFIG(symbol),
     symbol: tvSymbol,
+    height: 864,
   };
 
   return (
@@ -59,23 +61,17 @@ export default function StockSidebar({ symbol, profile, quote, exchange }: Stock
             <span className="text-gray-400">Industry: </span>
             <span className="text-white">{profile.industry || "N/A"}</span>
           </div>
-          {profile.shareOutstanding && (
-            <div className="text-sm">
-              <span className="text-gray-400">Employees (FY): </span>
-              <span className="text-white">164K</span>
-            </div>
-          )}
         </div>
         {profile.description && (
           <div className="text-sm text-gray-300 leading-relaxed">
             {profile.description}
           </div>
         )}
-        <div className="mt-4 h-[300px]">
+        <div className="mt-4 h-[450px] overflow-hidden relative rounded-lg border-2 border-gray-700">
           <TradingViewWidget
             scriptUrl={`${scriptUrl}symbol-profile.js`}
             config={profileConfig}
-            height={300}
+            height={450}
             className="custom-chart"
           />
         </div>
@@ -84,12 +80,12 @@ export default function StockSidebar({ symbol, profile, quote, exchange }: Stock
       {/* Financials Widget */}
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-white font-semibold mb-4">{symbol} Financials</h3>
-        <div className="h-[464px]">
+        <div className="h-[864px] overflow-hidden relative">
           <TradingViewWidget
             scriptUrl={`${scriptUrl}financials.js`}
             config={financialsConfig}
-            height={464}
-            className="custom-chart"
+            height={864}
+            className=""
           />
         </div>
       </div>

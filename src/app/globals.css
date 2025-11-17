@@ -483,6 +483,8 @@
   background-color: #141414 !important;
   border-radius: 8px !important;
   overflow: hidden !important;
+  max-height: 100% !important;
+  height: 100% !important;
 }
 
 .tv-embed-widget-wrapper__body {
@@ -492,7 +494,8 @@
 .tradingview-widget-container__widget {
   background-color: #141414 !important;
   height: 100% !important;
-
+  overflow: hidden !important;
+  max-height: 100% !important;
 }
 
 .widget-stock-heatmap-container .screenerMapWrapper-BBVfGP0b {
@@ -532,17 +535,27 @@
 .tv-embed-widget-wrapper .tv-embed-widget-wrapper__body {
   background: #141414 !important;
   background-color: #141414 !important;
+  overflow: hidden !important;
+  max-height: 100% !important;
+}
+
+.tv-embed-widget-wrapper {
+  overflow: hidden !important;
+  max-height: 100% !important;
+  height: 100% !important;
 }
 
 .tradingview-widget-container iframe {
   background-color: #141414 !important;
   width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
 }
 
 .custom-chart.tradingview-widget-container iframe {
   border: 1px solid #30333A;
   border-radius: 8px !important;
-  overflow: hidden !important;
 }
 
 /* Custom scrollbar that shows on hover */

@@ -1,6 +1,7 @@
 export const NAV_ITEMS = [
     { href: '/', label: 'Dashboard' },
     { href: '/search', label: 'Search' },
+    { href: '/watchlist', label: 'Watchlist' },
 ];
 
 export const MARKET_OVERVIEW_WIDGET_CONFIG = {
@@ -263,6 +264,16 @@ export const COMPANY_FINANCIALS_WIDGET_CONFIG = (symbol: string) => ({
     displayMode: 'regular',
     largeChartUrl: '',
 });
+
+export const ECONOMIC_CALENDAR_WIDGET_CONFIG = {
+    colorTheme: 'dark',
+    isTransparent: false,
+    locale: 'en',
+    countryFilter: 'ar,au,br,ca,cn,fr,de,in,id,it,jp,kr,mx,ru,sa,za,tr,gb,us,eu',
+    importanceFilter: '-1,0,1',
+    width: '100%',
+    height: 550,
+};
 
 export const POPULAR_STOCK_SYMBOLS = [
     // Tech Giants (the big technology companies)

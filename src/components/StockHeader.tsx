@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { StockQuote, StockProfile } from "@/lib/actions/finnhub.actions";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface StockHeaderProps {
   symbol: string;
@@ -25,6 +27,56 @@ export default function StockHeader({
   eps,
   divYield,
 }: StockHeaderProps) {
+  const [isInWatchlist, setIsInWatchlist] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    // Check if stock is in watchlist
+    const checkWatchlist = async () => {
+      try {
+        const response = await fetch(`/api/watchlist?symbol=${encodeURIComponent(symbol)}`);
+        if (response.ok) {
+          const data = await response.json();
+          setIsInWatchlist(data.isInWatchlist || false);
+        }
+      } catch (error) {
+        console.error("Error checking watchlist:", error);
+      } finally {
+        setIsChecking(false);
+      }
+    };
+    checkWatchlist();
+  }, [symbol]);
+
+  const toggleWatchlist = async () => {
+    setIsLoading(true);
+    try {
+      const action = isInWatchlist ? "remove" : "add";
+      const response = await fetch("/api/watchlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          symbol,
+          company: profile.name,
+          action,
+        }),
+      });
+
+      if (response.ok) {
+        setIsInWatchlist(!isInWatchlist);
+      } else {
+        console.error("Failed to update watchlist");
+      }
+    } catch (error) {
+      console.error("Error updating watchlist:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const isPositive = quote.change >= 0;
   const changeColor = isPositive ? "text-green-400" : "text-red-400";
 
@@ -62,9 +114,19 @@ export default function StockHeader({
             <p className="text-gray-500 text-xs">{exchangeName}</p>
           </div>
         </div>
-        <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold rounded-lg transition-colors flex items-center gap-2">
-          <Star className="w-4 h-4" />
-          Add to Watchlist
+        <button
+          onClick={toggleWatchlist}
+          disabled={isLoading || isChecking}
+          className={cn(
+            "px-4 py-2 font-semibold rounded-lg transition-colors flex items-center gap-2",
+            isInWatchlist
+              ? "bg-red-500 hover:bg-red-600 text-white"
+              : "bg-yellow-500 hover:bg-yellow-600 text-gray-900",
+            (isLoading || isChecking) && "opacity-50 cursor-not-allowed"
+          )}
+        >
+          <Star className={cn("w-4 h-4", isInWatchlist && "fill-current")} />
+          {isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
         </button>
       </div>
 
