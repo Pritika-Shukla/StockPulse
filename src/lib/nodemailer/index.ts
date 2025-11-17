@@ -15,7 +15,7 @@ export const sendNewsSummaryEmail = async ({email , date, newsContent}: {email: 
     .replace("{{newsContent}}", newsContent);
 
     const mailOptions = {
-        from: `"Signalist News" <${process.env.EMAIL_USER}>`,
+        from: `"StockPulse News" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: `📈 Market News Summary for ${date}`,
         text: `Market news summary for ${date}`,

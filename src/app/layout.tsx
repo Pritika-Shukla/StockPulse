@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Signalist - Professional Trading Platform",
-  description: "Master the markets with real-time data, advanced analytics, and personalized insights. Join thousands of traders who trust Signalist.",
+  title: "StockPulse - Professional Trading Platform",
+  description: "Master the markets with real-time data, advanced analytics, and personalized insights. Join thousands of traders who trust StockPulse.",
 };
 
 export default function RootLayout({

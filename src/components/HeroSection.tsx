@@ -37,7 +37,7 @@ const HeroSection = () => {
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
             Get real-time stock data, advanced analytics, and personalized insights to make informed investment decisions. 
-            Join thousands of traders who trust Signalist for their market analysis.
+            Join thousands of traders who trust StockPulse for their market analysis.
           </p>
 
           {/* CTA Buttons */}

@@ -14,7 +14,7 @@ const Header = ({ showAuth = true }: HeaderProps) => {
     <header className='sticky top-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 shadow-lg'>
         <div className="container header-wrapper">
             <Link href="/" className="flex items-center">
-                <Image src="/assets/images/logo.png" alt="Signalist" width={120} height={40} className="h-10 w-auto" />
+                <Image src="/assets/images/logo.png" alt="StockPulse" width={120} height={40} className="h-10 w-auto" />
             </Link>
             
             <div className="hidden md:block">

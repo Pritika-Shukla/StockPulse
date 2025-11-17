@@ -2,7 +2,7 @@ import { Inngest } from "inngest";
 
 // Create a client to send and receive events
 export const inngest = new Inngest({ 
-  id: "signalist",
+  id: "StockPulse",
   // Configure AI providers
   ai: {
     openai: {
