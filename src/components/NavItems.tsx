@@ -117,7 +117,7 @@ export function NavItems() {
   return (
     <>
       <nav
-        className={`fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[60] transition-all duration-500 ${
+        className={`fixed top-2 md:top-4 left-1/2 -translate-x-1/2 z-[60] transition-all duration-500 ${
           isVisible ? "translate-y-0 opacity-100" : "-translate-y-20 md:-translate-y-24 opacity-0"
         } ${hasLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
         style={{

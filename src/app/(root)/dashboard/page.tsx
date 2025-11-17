@@ -12,7 +12,7 @@ const Dashboard = () => {
       </SignedOut>
       <SignedIn>
        {/* Trading Widgets Section */}
-       <section className="h-screen w-full bg-gray-900">
+       <section className="h-screen w-full bg-gray-900 pt-16 md:pt-20 pb-8">
                 <div className="h-full w-full">
                     <div className="text-center mb-12">
                         <h2 className="text-4xl font-bold text-white mb-4">Live Market Data</h2>
