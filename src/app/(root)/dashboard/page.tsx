@@ -17,7 +17,6 @@ const Dashboard = () => {
                     <div className="grid h-full w-full gap-8 home-section">
                         <div className="h-full w-full md:col-span-1 xl:col-span-1">
                             <TradingViewWidget
-                              title="Market Overview"
                               scriptUrl={`${scriptUrl}market-overview.js`}
                               config={MARKET_OVERVIEW_WIDGET_CONFIG}
                               className="custom-chart"
@@ -26,7 +25,6 @@ const Dashboard = () => {
                         </div>
                         <div className="h-full w-full md:col-span-1 xl:col-span-2">
                             <TradingViewWidget
-                                title="Stock Heatmap"
                                 scriptUrl={`${scriptUrl}stock-heatmap.js`}
                                 config={HEATMAP_WIDGET_CONFIG}
                                 height={600}
