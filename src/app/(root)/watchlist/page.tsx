@@ -6,8 +6,6 @@ import React from 'react'
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import WatchlistTable from '@/components/WatchlistTable';
-import { Watchlist } from '@prisma/client';
-import { StockQuote } from '@/lib/actions/finnhub.actions';
 
 const WatchlistPage = async () => {
   const { userId } = await auth();

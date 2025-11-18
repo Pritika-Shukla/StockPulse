@@ -1,6 +1,6 @@
 "use client";
 
-import { ClerkProvider,SignInButton,UserProfile } from "@clerk/nextjs";
+import { ClerkProvider,SignInButton } from "@clerk/nextjs";
 
 const DropDown = () => {
   return(

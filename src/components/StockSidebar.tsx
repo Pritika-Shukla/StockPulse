@@ -12,7 +12,7 @@ interface StockSidebarProps {
   exchange: string;
 }
 
-export default function StockSidebar({ symbol, profile, quote, exchange }: StockSidebarProps) {
+export default function StockSidebar({ symbol, profile, quote: _quote, exchange }: StockSidebarProps) {
   const scriptUrl = "https://s3.tradingview.com/external-embedding/embed-widget-";
   const tvSymbol = getTradingViewSymbol(symbol, exchange);
 

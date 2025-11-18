@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
             isInWatchlist: watchlistSymbols.has(stock.symbol),
             percentChange: quote?.percentChange ?? 0,
           };
-        } catch (error) {
+        } catch {
           // If quote fetch fails, set percentChange to 0
           return {
             ...stock,

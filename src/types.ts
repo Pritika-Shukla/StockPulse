@@ -1,5 +1,3 @@
-import { Watchlist } from "@prisma/client";
-
 export interface ClerkUser {
     id: string;
     clerkId: string;

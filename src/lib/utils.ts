@@ -59,7 +59,7 @@ export const getTodayDateRange = () => {
 // News distribution
 export const calculateNewsDistribution = (symbolsCount: number) => {
   let itemsPerSymbol: number;
-  let targetNewsCount = 6;
+  const targetNewsCount = 6;
 
   if (symbolsCount < 3) itemsPerSymbol = 3;
   else if (symbolsCount === 3) itemsPerSymbol = 2;

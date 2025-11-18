@@ -86,7 +86,6 @@ export default function StockHeader({
   // Get market status (simplified - would need actual market hours)
   const getMarketStatus = () => {
     const now = new Date();
-    const hours = now.getHours();
     // Simple check - market typically open 9:30 AM - 4:00 PM ET
     return "MARKET CLOSED (AS OF " + now.toLocaleTimeString("en-US", { timeZoneName: "short" }) + ")";
   };
