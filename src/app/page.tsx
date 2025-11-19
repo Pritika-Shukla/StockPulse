@@ -1,5 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import Header from "@/components/Header";
+import FeatureSection from "@/components/FeatureSection";
+import Footer from "@/components/Footer";
 
 const Home = async () => {
 
@@ -8,6 +10,10 @@ const Home = async () => {
         <Header  />
         {/* Hero Section */}
         <HeroSection />
+        {/* Feature Section */}
+        <FeatureSection />
+        {/* Footer */}
+        <Footer />
   </>
     )
 }
