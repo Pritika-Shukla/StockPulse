@@ -10,7 +10,7 @@ interface GridCardProps {
 
 export function GridCard({ icon, title, description }: GridCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-gray-700 bg-gray-900/50 p-8 min-h-[280px] transition-all duration-500 hover:border-orange-500/45 hover:shadow-2xl hover:shadow-orange-500/20 hover:-translate-y-2">
+    <div className="group relative overflow-hidden rounded-xl border border-gray-700 bg-gray-900/50 p-8 min-h-[280px] transition-all duration-500 hover:border-orange-500/45 hover:shadow-2xl hover:shadow-orange-500/20 hover:-translate-y-2 active:scale-[0.97] active:opacity-90 active:border-orange-500/60 active:shadow-lg active:shadow-orange-500/30 active:transition-all active:duration-150 touch-manipulation cursor-pointer">
       {/* Animated grid pattern on hover */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
         style={{
