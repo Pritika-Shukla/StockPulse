@@ -1,5 +1,4 @@
-import React from 'react'
-import { Star } from 'lucide-react'
+import React from "react";
 
 const HeroSection = () => {
   return (
@@ -21,7 +20,8 @@ const HeroSection = () => {
 
           {/* Description */}
           <p className="text-base md:text-lg text-white mb-8 max-w-2xl mx-auto leading-relaxed">
-            Get real-time stock data, advanced analytics, and personalized insights to make informed investment decisions.
+            Get real-time stock data, advanced analytics, and personalized
+            insights to make informed investment decisions.
           </p>
 
           {/* CTA Buttons */}
@@ -29,30 +29,39 @@ const HeroSection = () => {
             <button className="bg-white text-black font-semibold py-2.5 px-7 rounded-md text-base transition-all duration-300 hover:bg-gray-100">
               Start Trading
             </button>
-            
+
             <button className="bg-black border border-white text-white font-semibold py-2.5 px-7 rounded-md text-base transition-all duration-300 hover:bg-gray-900">
               Explore Markets
             </button>
           </div>
+        </div>
+        <div className="py-12 w-[80%] mx-auto bg-[#262626] ">
+          {/* Video Demo Section */}
+          <section className=" ">
+            {/* Video Container */}
+            <div className="mx-auto px-4 md:px-8 lg:px-12 relative">
+              <div className="relative w-full max-w-6xl mx-auto">
 
-          {/* Endorsement Section */}
-          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 text-white">
-            <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-black font-bold text-base">S</span>
+                {/* Video wrapper with border */}
+                <div className="border-l-2 border-4 border-black/5 rounded-lg p-2 md:p-4 bg-[#1a1a1a]/50 backdrop-blur-sm">
+                  <div className="w-full h-[70vh] md:h-[85vh] overflow-hidden rounded-lg shadow-2xl border border-gray-800">
+                    <video
+                      src="/demo.mp4"
+                      autoPlay
+                      muted
+                      loop
+                      className="w-full h-full object-cover"
+                      playsInline
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-black stroke-black" />
-              ))}
-            </div>
-            <span className="text-sm md:text-base text-center">
-              Trusted by traders worldwide. <span className="font-bold">StockPulse</span>.
-            </span>
-          </div>
+          </section>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HeroSection
+export default HeroSection;
