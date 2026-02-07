@@ -173,10 +173,4 @@ If you have an idea or find a bug, feel free to open an **Issue** first.
   * Send one clean email per user
 * Clerk webhook ensures every authenticated user exists in Prisma
 
----
 
-<div align="center">
-
-🔗 **Live:** [https://stockpulse.pritika.xyz](https://stockpulse.pritika.xyz)
-
-</div>
